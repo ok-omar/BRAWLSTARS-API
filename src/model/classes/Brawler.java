@@ -37,16 +37,18 @@ public class Brawler {
 
     public Brawler() {}
 
+
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Brawler)) return false;
-        Brawler brawler = (Brawler) o;
-        return this.id == brawler.id;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Brawler other = (Brawler) obj;
+        return this.getId() == other.getId();
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(id);
+        return Integer.hashCode(getId());
     }
 
     public int getId() {
