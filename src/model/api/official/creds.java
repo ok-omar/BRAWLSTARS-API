@@ -1,13 +1,18 @@
 package model.api.official;
 
 public class creds {
-    private static final String schoolApiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjUzNDRjZTE2LTYyZWEtNGE4NC1iYzUzLWJjNTcyM2ZkMDM2ZiIsImlhdCI6MTc0Njc3MjkxNSwic3ViIjoiZGV2ZWxvcGVyL2QwZWM0ODIwLTYwZmUtNzBlNy0zNTVkLWVmNDhkODk0ZGFhYSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODUuNTAuMTYwLjQzIl0sInR5cGUiOiJjbGllbnQifV19.6cQBXBYftjMp6_eEfdnyi2B0HNfHbOjHivakFMefIyWJ9NKP_Lqz4WAdv4oW-BmjLJTX0Lw2Jc7ZzfO5moSD4Q";
+
     private static final String homeApiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjNjMjJjODRhLTVhMTItNDg2OC05MDI3LTEyZjkxZDczODFiZCIsImlhdCI6MTc0NzU5NjAxNywic3ViIjoiZGV2ZWxvcGVyL2QwZWM0ODIwLTYwZmUtNzBlNy0zNTVkLWVmNDhkODk0ZGFhYSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNzkuMTE3LjE3NC43MiJdLCJ0eXBlIjoiY2xpZW50In1dfQ.lO_c3sBc2jPoYpTR0USFYAGiuH2krJO4PqgCcoUzDr-5q4Nj6lw2KXjeXwDe0zVgUV4Wkg-KZcmjEbRC5QTi3g";
+    private static final String teacherApiKey = "";
+    private static final String schoolApiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjUzNDRjZTE2LTYyZWEtNGE4NC1iYzUzLWJjNTcyM2ZkMDM2ZiIsImlhdCI6MTc0Njc3MjkxNSwic3ViIjoiZGV2ZWxvcGVyL2QwZWM0ODIwLTYwZmUtNzBlNy0zNTVkLWVmNDhkODk0ZGFhYSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODUuNTAuMTYwLjQzIl0sInR5cGUiOiJjbGllbnQifV19.6cQBXBYftjMp6_eEfdnyi2B0HNfHbOjHivakFMefIyWJ9NKP_Lqz4WAdv4oW-BmjLJTX0Lw2Jc7ZzfO5moSD4Q";
     private static final String officialJsonPath = "src/model/api/official/brawlers-official.json";
 
     public static String getApiKey(int n){
+        // Hello Xavi
+        // To make the API call work for you, just update the if statement from n == 0 to n == 1
+        // Also don't forget to update teacherApiKey with your own API key
         if (n == 0) return homeApiKey;
-        else return schoolApiKey;
+        else return teacherApiKey;
     }
 
     public static String getOfficialJsonPath() {
