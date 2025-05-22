@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import model.DAO.DBConnection;
 import model.classes.Brawler;
 import model.classes.*;
+import view.View;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,18 +21,32 @@ public class MySQLBrawlerDAO {
      */
     public static void Create(Brawler b){
         Connection con = DBConnection.getConnection();
-        String st = "INSERT INTO Brawlers (brawler_id, name, rarity, class) VALUES (?, ?, ?, ?))";
+        String st = "INSERT OR REPLACE INTO Brawlers (brawler_id, name, rarity, class) VALUES (?, ?, ?, ?)";
         try {
             // Crear el brawler
             PreparedStatement ps = con.prepareStatement(st);
             ps.setInt(1, b.getId());
             ps.setString(2, b.getName().toUpperCase());
-            ps.setString(3, b.getRarity().getName().toUpperCase());
-            ps.setString(4, b.getClass().getName().toUpperCase());
+
+
+            if (b.getRarity() != null) {
+                ps.setString(3, b.getRarity().getName().toUpperCase());
+            } else {
+                ps.setString(3, null);
+            }
+
+
+            if (b.getBrawlerClass() != null) {
+                ps.setString(4, b.getBrawlerClass().getName().toUpperCase());
+            } else {
+                ps.setString(4, null);
+            }
             ps.executeUpdate();
 
             MySQLGadgetsDAO.Create(b.getGadgets(), b.getId());
             MySQLStarPowersDAO.Create(b.getStarPowers(), b.getId());
+
+            System.out.println("Inserted " + b.getName() + " successfully!");
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -62,7 +77,7 @@ public class MySQLBrawlerDAO {
                 brawlerClass.setName(rs.getString("class"));
 
 
-                String updateDate = rs.getString("update_date");
+                String updateDate = rs.getString("last_modified");
                 List<Gadget> gadgets = getGadgetsByBrawlerId(brawler_id);
                 List<StarPower> starPowers = getStarPowersByBrawlerId(brawler_id);
                 return new Brawler(brawler_id, name, starPowers, gadgets, brawlerClass, rarity, formateDate(updateDate));
@@ -97,7 +112,7 @@ public class MySQLBrawlerDAO {
                 brawlerClass.setName(rs.getString("class"));
 
 
-                String updateDate = rs.getString("update_date");
+                String updateDate = rs.getString("last_modified");
                 List<Gadget> gadgets = getGadgetsByBrawlerId(brawler_id);
                 List<StarPower> starPowers = getStarPowersByBrawlerId(brawler_id);
                 brawlers.add(new Brawler(brawler_id, name, starPowers, gadgets, brawlerClass, rarity, formateDate(updateDate)));
@@ -166,7 +181,7 @@ public class MySQLBrawlerDAO {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            Gadget gadget = new Gadget(rs.getInt("id"), rs.getString("name"));
+            Gadget gadget = new Gadget(rs.getInt("gadget_id"), rs.getString("name"));
             gadgets.add(gadget);
         }
 
@@ -187,7 +202,7 @@ public class MySQLBrawlerDAO {
         ps.setInt(1, brawlerId);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            StarPower sp = new StarPower(rs.getInt("id"), rs.getString("name"));
+            StarPower sp = new StarPower(rs.getInt("starpower_id"), rs.getString("name"));
             starPowers.add(sp);
         }
 
@@ -205,9 +220,10 @@ public class MySQLBrawlerDAO {
         return date.format(formatter);
     }
 
-    public static LocalDateTime formateDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(date, formatter);
+    public static LocalDateTime formateDate(String dateString) {
+        if (dateString == null) return null; 
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
+
 
 }
