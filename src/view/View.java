@@ -46,6 +46,23 @@ public class View {
         }
     }
 
+    public static void printBrawlerCompact(Brawler b){
+        System.out.printf("ID: %d           Nom: %s%n", b.getId(), b.getName());
+        if (b.getBrawlerClass() != null) {
+            System.out.printf("Class:  %s%n", b.getBrawlerClass().getName());
+        }
+        if (b.getRarity() != null) {
+            System.out.printf("Rarity: %s%n", b.getRarity().getName());
+        }
+    }
+
+    public static void printBrawlersCompact(List<Brawler> brawlers){
+        for (Brawler b : brawlers){
+            printBrawlerCompact(b);
+            separate();
+        }
+    }
+
     public static void printGadgets(List<Gadget> gadgets){
         for (Gadget g : gadgets){
             System.out.printf("    Id: %d           Name: %s%n", g.getId(), g.getName());
