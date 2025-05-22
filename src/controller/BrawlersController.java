@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class BrawlersController {
     // Create
@@ -26,6 +27,7 @@ public class BrawlersController {
         // Get the brawlers from the databse
         List<Brawler> dbBrawlers = MySQLBrawlerDAO.readAll();
         // Get the brawlers from the JSON file
+        OfficialEndpoint.fetchAndSaveBrawlersJson(0);
         String jsonPath = creds.getOfficialJsonPath();
         List<Brawler> jsonBrawlers = null;
         try {
@@ -45,13 +47,11 @@ public class BrawlersController {
             if (!jsonRemainingBrawlers.isEmpty()){
                 validInput.add(1);
                 // Print the official api brawlers that are missing in the database
+                System.out.println("**************************************************************************");
                 System.out.println("Brawlstars API brawlers that are missing in the database:");
-                View.printBrawlers(jsonRemainingBrawlers);
-            } else {
-                System.out.println("All the brawlers from the Brawlstars API (JSON file) are already in the database");
+                System.out.println("**************************************************************************");
+                View.printBrawlersCompact(jsonRemainingBrawlers);
             }
-
-
         }
         // Check if brawlers from the endpoint are in the database
         List<Brawler> endpointRemainingBrawlers = null;
@@ -61,10 +61,10 @@ public class BrawlersController {
             if (!endpointRemainingBrawlers.isEmpty()){
                 validInput.add(2);
                 // Print the unofficial api brawlers that are missing in the database
+                System.out.println("**************************************************************************");
                 System.out.println("Brawlify API brawlers that are missing in the database:");
-                View.printBrawlers(endpointRemainingBrawlers);
-            } else {
-                System.out.println("All the brawlers from the endpoint are already in the database");
+                System.out.println("**************************************************************************");
+                View.printBrawlersCompact(endpointRemainingBrawlers);
             }
         }
         // Ask if the user wants to insert the missing brawlers in the database
@@ -78,15 +78,16 @@ public class BrawlersController {
             System.out.println("0. None (Exit)");
             System.out.println("1. Brawlers from the Brawlstars API (JSON file)");
             System.out.println("2. Brawlers from the Brawlify API (Endpoint)");
-            System.out.printf("Select an option: ");
+
             int option;
             do {
+                System.out.printf("Select an option: ");
                 option = scanner.nextInt();
                 scanner.nextLine();
                 if (option == 1 && !validInput.contains(1)) System.out.println("All the brawlers from the Brawlstars API (JSON file) are already in the database");
                 else if (option == 2 && !validInput.contains(2)) System.out.println("All the brawlers from the Brawlify API (Endpoint) are already in the database");
-                else if (option != 1 && option != 2) System.out.println("Opció no vàlida. Intenta-ho de nou.");
-            } while (!validInput.contains(option) || option != 0);
+                else if (option != 1 && option != 2 && option != 0) System.out.println("Invalid option. Please try again.");
+            } while (!validInput.contains(option) && option != 0);
 
             if (option == 1){
                 for (Brawler b : jsonRemainingBrawlers){
@@ -97,7 +98,7 @@ public class BrawlersController {
                     MySQLBrawlerDAO.Create(b);
                 }
             } else {
-                System.out.println("No s'ha afegit cap brawler a la base de dades.");
+                System.out.println("No changes have been made to the database.");
             }
         }
 
@@ -144,7 +145,7 @@ public class BrawlersController {
                 MySQLBrawlerDAO.Create(b);
             }
         } else if (option == 2) {
-            for (Brawler b : jsonBrawlers){
+            for (Brawler b : endpointBrawlers){
                 MySQLBrawlerDAO.Create(b);
             }
         } else {
@@ -162,7 +163,7 @@ public class BrawlersController {
      * List all brawlers from the JSON file (Brawlstars)
      */
     public static void listBrawlersFromJson() {
-        OfficialEndpoint.fetchAndSaveBrawlersJson();
+        OfficialEndpoint.fetchAndSaveBrawlersJson(1);
         String jsonPath = creds.getOfficialJsonPath();
         List<Brawler> brawlers = null;
         try {
