@@ -10,7 +10,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 public class OfficialEndpoint {
-    public static void fetchAndSaveBrawlersJson(){
+    public static void fetchAndSaveBrawlersJson(int n){
         String api_url = "https://api.brawlstars.com/v1/brawlers";
         try {
             URL url = new URL(api_url);
@@ -38,9 +38,7 @@ public class OfficialEndpoint {
                 in.close();
 
                 // Save to file
-                saveToFile("src/model/api/official/brawlers-official.json", response.toString());
-
-                System.out.println("JSON saved to brawlers-official.json");
+                saveToFile("src/model/api/official/brawlers-official.json", response.toString(), n);
 
             } else {
                 System.out.println("Request failed: " + responseCode);
@@ -59,10 +57,11 @@ public class OfficialEndpoint {
 
 
     }
-    public static void saveToFile(String fileName, String content) {
+    public static void saveToFile(String fileName, String content, int n) {
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(content);
-            System.out.printf("JSON saved to %s%n", fileName);
+            if (n == 1) System.out.printf("JSON saved to %s%n", fileName);
+
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
