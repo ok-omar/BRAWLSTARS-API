@@ -39,11 +39,13 @@ public class DBConnection {
         }
     }
 
-    public static void closeCon() {
+    public static void closeCon(int n) {
         if (connection != null) {
             try {
                 connection.close();
+                if (n != 0){
                 System.out.println("[  ✔  ] Connexió tancada correctament");
+                }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

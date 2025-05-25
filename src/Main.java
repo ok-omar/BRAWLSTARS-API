@@ -43,7 +43,7 @@ public class Main {
                     BrawlersController.copyMissingBrawlers(scanner);
                     break;
                 case 0:
-                    DBConnection.closeCon();
+                    DBConnection.closeCon(1);
                     View.separate();
                     break;
                 case 8:
