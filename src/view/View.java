@@ -19,11 +19,11 @@ public class View {
 
     public static void printBrawler(Brawler b){
         System.out.println("ID: " + b.getId());
-        System.out.println("Nom: " + b.getName().toUpperCase());
-        if (b.getBrawlerClass() != null) {
+        System.out.println("Nom: " + b.getName());
+        if (b.getBrawlerClass().getName() != null) {
             System.out.println("Class:  " + b.getBrawlerClass().getName().toUpperCase());
         }
-        if (b.getRarity() != null) {
+        if (b.getRarity().getName() != null) {
             System.out.println("Rarity: " + b.getRarity().getName().toUpperCase());
         }
 
