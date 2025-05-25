@@ -64,5 +64,18 @@
 ##### Other:
 - `controller/BrawlersController`: Handles the interactions / communication between the parts mentioned above.
 ---
+## 🛠️ Tests that I have done
+- List Brawlers from the database.
+- List Brawlers from the Official Brawlstars API.
+- List Brawlers from the Official Brawlstars API with incorrect API key / IP Address.
+- List Brawlers from the Brawlify API.
+- List Brawlers form the Brawlify API with the server down (ERROR 404).
+- Insert all Brawlers from the Official Brawlstars API to the database.
+- Insert all Brawlers from the Brawlify API to the database.
+- Insert missing Brawlers from the Official Brawlstars API and Brawlify API to the database (after deleting brawlers manualy, this test has been done twice, one for the official API, one for the brawlify API).
+- Update a Brawler from Brawlify API (The one that was already in the db was from the official API with missing rarity and class).
+- Update a Brawler from Official Brawlstars API (The one that was already in the db was from the brawlify API with rarity and class).
+
+\*These tests were done just before submitting the assigment, way more tests were done in course of the development, but these are the ones that I have done before submitting the assignment to make it easy to correct, to make it easier for you to "Try to break the program" by doing different tests than the mentioned above.
 
 
