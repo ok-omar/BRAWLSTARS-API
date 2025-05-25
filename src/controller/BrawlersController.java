@@ -334,15 +334,14 @@ public class BrawlersController {
         if (option == 2){
             System.out.println("No changes have been done to the database.");
         } else {
+            // Update the brawler in the database, adding the updateDate
             apiBrawler.setUpdateDate(LocalDateTime.now());
             MySQLBrawlerDAO.Update(apiBrawler);
             System.out.println("Brawler updated successfully!");
         }
-        // Update the brawler in the database, adding the updateDate
 
     }
 
-    // Helper functions
 
 
 
