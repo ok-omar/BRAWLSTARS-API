@@ -21,6 +21,7 @@
 ---
 ## 📁 Project Structure
 ### Project tree:
+```
 ├── src/
 │   ├── controller/
 │   │   └── BrawlersController.java
@@ -48,6 +49,7 @@
 │   │   └── View.java
 │   └── Main.java
 └── brawlers.db
+```
 ### Functionalities
 ##### User Interactions
 - Main.java: Entry point and user interactions
