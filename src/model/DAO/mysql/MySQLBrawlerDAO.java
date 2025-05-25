@@ -131,8 +131,18 @@ public class MySQLBrawlerDAO {
         try {
             PreparedStatement ps = con.prepareStatement(st);
             ps.setString(1, b.getName().toUpperCase());
+            if (b.getRarity() != null){
             ps.setString(2, b.getRarity().getName().toUpperCase());
-            ps.setString(3, b.getBrawlerClass().getName().toUpperCase());
+            } else {
+                ps.setString(2, null);
+            }
+
+            if (b.getBrawlerClass() != null){
+                ps.setString(3, b.getBrawlerClass().getName().toUpperCase());
+            } else {
+                ps.setString(3, null);
+
+            }
             ps.setString(4, formateDate(b.getUpdateDate()));
             ps.setInt(5, b.getId());
             ps.executeUpdate();
@@ -164,8 +174,6 @@ public class MySQLBrawlerDAO {
         }
     }
     // Helper functions
-
-
     /**
      * Get the gatdets of a brawler by its ID
      * @param brawlerId
