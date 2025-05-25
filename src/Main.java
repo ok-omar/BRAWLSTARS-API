@@ -1,6 +1,7 @@
 import com.google.gson.Gson;
 import controller.BrawlersController;
 import model.DAO.DBConnection;
+import model.DAO.mysql.MySQLBrawlerDAO;
 import view.View;
 
 import java.util.Scanner;
@@ -30,10 +31,10 @@ public class Main {
                     BrawlersController.listBrawlersFromJson();
                     break;
                 case 4:
-
+                    BrawlersController.updateBrawlerFromEndpoint(scanner);
                     break;
                 case 5:
-
+                    BrawlersController.updateBrawlerFromJson(scanner);
                     break;
                 case 6:
                     BrawlersController.copyAllBrawlers(scanner);
@@ -45,6 +46,8 @@ public class Main {
                     DBConnection.closeCon();
                     View.separate();
                     break;
+                case 8:
+                    MySQLBrawlerDAO.DeleteAll();
                 default:
 
                     System.out.println("Opció no vàlida! Introdueix un número entre 0 i 7.");
