@@ -1,5 +1,7 @@
 package model.api.official;
 
+import model.DAO.DBConnection;
+
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,6 +24,12 @@ public class OfficialEndpoint {
 
             // Verificar si la resposta es correcte
             int responseCode = connection.getResponseCode();
+            if (responseCode == 403) {
+                System.out.println("Request to BRAWLSTARS API failed with Error 403 (Forbidden), please update the API key and try again if your API has changed.");
+                System.out.println("Current IP Adress: " + getPublicIP());
+                DBConnection.closeCon(0);
+                System.exit(1);
+            }
             if (responseCode == 200) {
 
                 // Prepare to read the response stream from the API
@@ -41,7 +49,9 @@ public class OfficialEndpoint {
                 saveToFile("src/model/api/official/brawlers-official.json", response.toString(), n);
 
             } else {
-                System.out.println("Request failed: " + responseCode);
+                System.out.println("Request failed with error code: " + responseCode);
+                DBConnection.closeCon(0);
+                System.exit(1);
             }
 
         } catch (MalformedURLException e) {
@@ -53,6 +63,8 @@ public class OfficialEndpoint {
         } catch (IOException e) {
             System.out.println("IOExeption: " + e);
             e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exeption: " + e);
         }
 
 
@@ -67,4 +79,10 @@ public class OfficialEndpoint {
             e.printStackTrace();
         }
     }
+
+    public static String getPublicIP() throws Exception {
+        return new java.util.Scanner(new java.net.URL("https://api.ipify.org").openStream(), "UTF-8")
+                .useDelimiter("\\A").next();
+    }
+
 }

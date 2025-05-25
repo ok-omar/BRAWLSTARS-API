@@ -38,6 +38,10 @@ public class BrawlersController {
         }
         // Get the brawlers from the endpoint
         String fetchedBrawlify = BrawlifyEndpoint.fetchBrawlify();
+        if (fetchedBrawlify == null){
+            System.out.println("Error: Couldn't connect to Brawlify API.");
+            return;
+        }
         List<Brawler> endpointBrawlers = BrawlersWrapper.fromUnofficialJsonString(fetchedBrawlify).getUnofficialBrawlers();
         // remove the brawlers that are in the database from the brawlers from the JSON file
         List<Brawler> jsonRemainingBrawlers = null;
@@ -120,6 +124,10 @@ public class BrawlersController {
         }
         // Get the brawlers from the endpoint
         String fetchedBrawlify = BrawlifyEndpoint.fetchBrawlify();
+        if (fetchedBrawlify == null){
+            System.out.println("Error: Couldn't connect to Brawlify API.");
+            return;
+        }
         List<Brawler> endpointBrawlers = BrawlersWrapper.fromUnofficialJsonString(fetchedBrawlify).getUnofficialBrawlers();
         // Ask if the user wants to insert the missing brawlers in the database
 
@@ -177,6 +185,10 @@ public class BrawlersController {
      */
     public static void listBrawlersFromEndpoint() {
         String fetchedBrawlify = BrawlifyEndpoint.fetchBrawlify();
+        if (fetchedBrawlify == null){
+            System.out.println("Error: Couldn't connect to Brawlify API.");
+            return;
+        }
         List<Brawler> brawlers = BrawlersWrapper.fromUnofficialJsonString(fetchedBrawlify).getUnofficialBrawlers();
         if (brawlers.isEmpty()) {
             System.out.println("No hi ha brawlers a l'endpoint");
@@ -270,6 +282,7 @@ public class BrawlersController {
         } else {
             brawlerFound.setUpdateDate(LocalDateTime.now());
             MySQLBrawlerDAO.Update(brawlerFound);
+            System.out.println("Brawler updated successfully!");
         }
 
     }
@@ -323,6 +336,7 @@ public class BrawlersController {
         } else {
             apiBrawler.setUpdateDate(LocalDateTime.now());
             MySQLBrawlerDAO.Update(apiBrawler);
+            System.out.println("Brawler updated successfully!");
         }
         // Update the brawler in the database, adding the updateDate
 

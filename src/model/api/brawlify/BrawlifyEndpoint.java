@@ -1,5 +1,6 @@
 package model.api.brawlify;
 import com.google.gson.Gson;
+import model.DAO.DBConnection;
 import model.classes.Brawler;
 
 import javax.net.ssl.*;
@@ -18,7 +19,6 @@ public class BrawlifyEndpoint {
     public static String fetchBrawlify(){
         String api_url = "https://api.brawlify.com/v1/brawlers";
         try {
-            disableSSLVerification();
             URL url = new URL(api_url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -30,6 +30,7 @@ public class BrawlifyEndpoint {
 
             // Verificar si la resposta es correcte
             int responseCode = connection.getResponseCode();
+
             if (responseCode == 200) {
 
                 // Prepare to read the response stream from the API
@@ -54,7 +55,7 @@ public class BrawlifyEndpoint {
 
 
             } else {
-                System.out.println("Request failed: " + responseCode);
+                System.out.println("Request failed with error code: " + responseCode);
             }
 
         } catch (MalformedURLException e) {
@@ -62,12 +63,10 @@ public class BrawlifyEndpoint {
             e.printStackTrace();
         } catch (ProtocolException e) {
             System.out.println("ProtocolException: " + e);
-            e.printStackTrace();
         } catch (IOException e) {
             System.out.println("IOExeption: " + e);
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception: " + e);
         }
         return null;
     }
@@ -75,7 +74,6 @@ public class BrawlifyEndpoint {
     public static Brawler fetchBrawler(int braweler_id){
         String api_url = String.format("https://api.brawlify.com/v1/brawlers/%d", braweler_id);
         try {
-            disableSSLVerification();
             URL url = new URL(api_url);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -137,26 +135,6 @@ public class BrawlifyEndpoint {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Function to disable SLL Verification (AI GENERATED)
-     * @throws Exception
-     */
-    public static void disableSSLVerification() throws Exception {
-        TrustManager[] trustAllCerts = new TrustManager[] {
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() { return null; }
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) { }
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) { }
-                }
-        };
-
-        SSLContext sc = SSLContext.getInstance("SSL");
-        sc.init(null, trustAllCerts, new java.security.SecureRandom());
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
     }
 
 
