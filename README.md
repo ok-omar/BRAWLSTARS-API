@@ -52,17 +52,17 @@
 ```
 ### Functionalities
 ##### User Interactions
-- Main.java: Entry point and user interactions
-- view/View.java: Console output / visualization for the Menus, Objects ..etc
+- `Main.java`: Entry point and user interactions
+- `view/View.java`: Console output / visualization for the Menus, Objects ..etc
 ##### API Intercations
-- model/api/brawlify/BrawlifyEndpoint.java: Handles the calls/requests to the Brawlify API.
-- model/api/official/OfficialEndpoint.java: Handles the request to the official Brawlstars API and saves it as a file in the same directory.
-- - model/api/BrawlersWrapper.java: Handles parsing the requests from both classes above.
+- `model/api/brawlify/BrawlifyEndpoint.java`: Handles the calls/requests to the Brawlify API.
+- `model/api/official/OfficialEndpoint.java`: Handles the request to the official Brawlstars API and saves it as a file in the same directory.
+- `model/api/BrawlersWrapper.java`: Handles parsing the requests from both classes above.
 ##### Data Handling
-- model/classes: Where all the java objects are located.
-- model/DAO: Handles the CRUD Operations on the database.
+- `model/classes`: Where all the java objects are located.
+- `model/DAO`: Handles the CRUD Operations on the database.
 ##### Other:
-- controller/BrawlersController: Handles the interactions / communication between the parts mentioned above.
+- `controller/BrawlersController`: Handles the interactions / communication between the parts mentioned above.
 ---
 
 
