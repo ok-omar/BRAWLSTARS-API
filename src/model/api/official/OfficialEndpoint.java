@@ -20,7 +20,7 @@ public class OfficialEndpoint {
             connection.setRequestMethod("GET");
 
             // Construir el Header
-            connection.setRequestProperty("Authorization", "Bearer " + creds.getApiKey(0));
+            connection.setRequestProperty("Authorization", "Bearer " + creds.getApiKey());
 
             // Verificar si la resposta es correcte
             int responseCode = connection.getResponseCode();
