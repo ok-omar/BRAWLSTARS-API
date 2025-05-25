@@ -15,8 +15,8 @@
 
 ## 🚀 Getting Started
 
-- Before the first execution of the project, first you have to navigate to `src/model/api/official/creds.java` and update the variable `teacherApiKey` with your own key and update the function `getApiKey()` per the instructions in the comments.
-- After you finish, go ahead and execute the `src/Main.java`
+- Before the first execution of the project, first you have to navigate to `src/model/api/official/creds.java` and update the variable `apiKey` with your own key.
+- Next, go ahead and execute the `src/Main.java`
 - The Gson and sqlite-jdbc libraries are in the `lib` folder, import them if needed.
 ---
 ## 📁 Project Structure
