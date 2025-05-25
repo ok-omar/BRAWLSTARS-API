@@ -130,9 +130,9 @@ public class MySQLBrawlerDAO {
         String st = "UPDATE Brawlers SET name = ?, rarity = ?, class = ?, last_modified = ? WHERE brawler_id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(st);
-            ps.setString(1, b.getName());
-            ps.setString(2, b.getRarity().getName());
-            ps.setString(3, b.getClass().getName());
+            ps.setString(1, b.getName().toUpperCase());
+            ps.setString(2, b.getRarity().getName().toUpperCase());
+            ps.setString(3, b.getBrawlerClass().getName().toUpperCase());
             ps.setString(4, formateDate(b.getUpdateDate()));
             ps.setInt(5, b.getId());
             ps.executeUpdate();
@@ -221,8 +221,9 @@ public class MySQLBrawlerDAO {
     }
 
     public static LocalDateTime formateDate(String dateString) {
-        if (dateString == null) return null; 
-        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        if (dateString == null) return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(dateString, formatter);
     }
 
 
