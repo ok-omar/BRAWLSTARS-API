@@ -19,12 +19,12 @@ public class View {
 
     public static void printBrawler(Brawler b){
         System.out.println("ID: " + b.getId());
-        System.out.println("Nom: " + b.getName());
+        System.out.println("Nom: " + b.getName().toUpperCase());
         if (b.getBrawlerClass() != null) {
-            System.out.println("Class:  " + b.getBrawlerClass().getName());
+            System.out.println("Class:  " + b.getBrawlerClass().getName().toUpperCase());
         }
         if (b.getRarity() != null) {
-            System.out.println("Rarity: " + b.getRarity().getName());
+            System.out.println("Rarity: " + b.getRarity().getName().toUpperCase());
         }
 
         System.out.println("Gadgets: ");
@@ -47,12 +47,12 @@ public class View {
     }
 
     public static void printBrawlerCompact(Brawler b){
-        System.out.printf("ID: %d           Nom: %s%n", b.getId(), b.getName());
+        System.out.printf("ID: %d           Nom: %s%n", b.getId(), b.getName().toUpperCase());
         if (b.getBrawlerClass() != null) {
-            System.out.printf("Class:  %s%n", b.getBrawlerClass().getName());
+            System.out.printf("Class:  %s%n", b.getBrawlerClass().getName().toUpperCase());
         }
         if (b.getRarity() != null) {
-            System.out.printf("Rarity: %s%n", b.getRarity().getName());
+            System.out.printf("Rarity: %s%n", b.getRarity().getName().toUpperCase());
         }
     }
 
@@ -65,13 +65,13 @@ public class View {
 
     public static void printGadgets(List<Gadget> gadgets){
         for (Gadget g : gadgets){
-            System.out.printf("    Id: %d           Name: %s%n", g.getId(), g.getName());
+            System.out.printf("    Id: %d           Name: %s%n", g.getId(), g.getName().toUpperCase());
         }
     }
 
     public static void printStarPowers(List<StarPower> starPowers){
         for (StarPower sp : starPowers){
-            System.out.printf("    Id: %d           Name: %s%n", sp.getId(), sp.getName());
+            System.out.printf("    Id: %d           Name: %s%n", sp.getId(), sp.getName().toUpperCase());
         }
     }
 
