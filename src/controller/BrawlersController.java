@@ -9,6 +9,7 @@ import model.classes.Brawler;
 import view.View;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -73,20 +74,20 @@ public class BrawlersController {
             return;
         } else {
             if (validInput.contains(1)) System.out.println("Missing brawlers from Brawlstars API: " + jsonRemainingBrawlers.size());
-            if (validInput.contains(2)) System.out.println("Missing brawlers from Brawlify API:   " + endpointRemainingBrawlers.size());
+            if (validInput.contains(2)) System.out.println("Missing brawlers from Brawlify API: " + endpointRemainingBrawlers.size());
             System.out.println("Which brawlers do you want to insert in the database?");
             System.out.println("0. None (Exit)");
             System.out.println("1. Brawlers from the Brawlstars API (JSON file)");
             System.out.println("2. Brawlers from the Brawlify API (Endpoint)");
 
             int option;
+            System.out.printf("Select an option: ");
             do {
-                System.out.printf("Select an option: ");
                 option = scanner.nextInt();
                 scanner.nextLine();
                 if (option == 1 && !validInput.contains(1)) System.out.println("All the brawlers from the Brawlstars API (JSON file) are already in the database");
                 else if (option == 2 && !validInput.contains(2)) System.out.println("All the brawlers from the Brawlify API (Endpoint) are already in the database");
-                else if (option != 1 && option != 2 && option != 0) System.out.println("Invalid option. Please try again.");
+                else if (option != 1 && option != 2 && option != 0) System.out.printf("Invalid option. Please try again: ");
             } while (!validInput.contains(option) && option != 0);
 
             if (option == 1){
@@ -133,7 +134,7 @@ public class BrawlersController {
         do {
             option = scanner.nextInt();
             scanner.nextLine();
-            if (option != 1 && option != 2 && option != 0) System.out.println("Opció no vàlida. Intenta-ho de nou.");
+            if (option != 1 && option != 2 && option != 0) System.out.printf("Invalid option, please try again: ");
         } while (option != 1 && option != 2 && option != 0);
 
         // Delete all brawlers
@@ -157,25 +158,6 @@ public class BrawlersController {
 
 
     // Read
-
-    /**
-     * 6
-     * List all brawlers from the JSON file (Brawlstars)
-     */
-    public static void listBrawlersFromJson() {
-        OfficialEndpoint.fetchAndSaveBrawlersJson(1);
-        String jsonPath = creds.getOfficialJsonPath();
-        List<Brawler> brawlers = null;
-        try {
-            brawlers = BrawlersWrapper.fromOfficialJsonFile(jsonPath).getOfficialBrawlers();
-            View.printBrawlers(brawlers);
-
-        } catch (IOException e) {
-            System.out.printf("Error reading JSON file %s : %s", jsonPath, e.getMessage());
-        }
-
-    }
-
     /**
      * 1
      * List all brawlers from the database
@@ -203,29 +185,150 @@ public class BrawlersController {
         }
     }
 
+    /**
+     * 3
+     * List all brawlers from the JSON file (Brawlstars)
+     */
+    public static void listBrawlersFromJson() {
+        OfficialEndpoint.fetchAndSaveBrawlersJson(1);
+        String jsonPath = creds.getOfficialJsonPath();
+        List<Brawler> brawlers = null;
+        try {
+            brawlers = BrawlersWrapper.fromOfficialJsonFile(jsonPath).getOfficialBrawlers();
+            View.printBrawlers(brawlers);
+
+        } catch (IOException e) {
+            System.out.printf("Error reading JSON file %s : %s", jsonPath, e.getMessage());
+        }
+
+    }
+
 
     // Update
-    public static void updateBrawlerFromJson() {
+    /**
+     * 4
+     * Update a brawler from the endpoint (Brawlify)
+     */
+    public static void updateBrawlerFromJson(Scanner scanner) {
         // Ask for the brawler ID
-
+        int brawlerId;
+        do {
+            System.out.print("Brawler id: ");
+            brawlerId = scanner.nextInt();
+            scanner.nextLine();
+            if (brawlerId < 0) System.out.println("Invalid id, please try again.");
+        } while (brawlerId < 0);
+        // Search for the brawler in the Database
+        Brawler dbBrawler = MySQLBrawlerDAO.Read(brawlerId);
+        if (dbBrawler == null) {
+            System.out.printf("Brawler with the id %d doesn't exist in the database%n", brawlerId);
+            return;
+        }
+        // Get the brawlers from the JSON file
+        OfficialEndpoint.fetchAndSaveBrawlersJson(0);
+        String jsonPath = creds.getOfficialJsonPath();
+        List<Brawler> jsonBrawlers = null;
+        try {
+            jsonBrawlers = BrawlersWrapper.fromOfficialJsonFile(jsonPath).getOfficialBrawlers();
+        } catch (IOException e) {
+            System.out.printf("Error reading JSON file %s : %s", jsonPath, e.getMessage());
+        }
+        Brawler brawlerFound = null;
         // Search for the brawler in the JSON file
-
+        for (Brawler b : jsonBrawlers){
+            if (b.getId() == brawlerId){
+                brawlerFound = b;
+            }
+        }
+        if (brawlerFound != null){
+            System.out.println("Brawler found!");
+        } else {
+            System.out.printf("Brawler with id %d not found in the database, would you like to insert it?%n", brawlerId);
+            // improvement: add the ability to insert the brawler with that id in the databse
+            return;
+        }
+        View.separate();
+        System.out.println("Brawler from database: ");
+        View.printBrawler(dbBrawler);
+        View.separate();
+        System.out.println("Brawler Found in Brawlstars API (JSON): ");
+        View.printBrawler(brawlerFound);
         // Ask if the user wants to update the brawler in the database
+        System.out.println("Would you like to overwrite the brawler from the database with the brawler found?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
 
+        int option;
+        System.out.printf("Select option: ");
+        do {
+            option = scanner.nextInt();
+            if (option != 1 && option != 2) System.out.printf("Invalid option, please try again: ");
+        } while (option != 1 && option != 2);
         // Update the brawler in the database, adding the updateDate
+        if (option == 2){
+            System.out.println("No changes have been done to the database.");
+        } else {
+            brawlerFound.setUpdateDate(LocalDateTime.now());
+            MySQLBrawlerDAO.Update(brawlerFound);
+        }
 
     }
-
-    public static void updateBrawlerFromEndpoint() {
+    /**
+     * 5
+     * Update a brawler from the JSON file (Brawlstars)
+     */
+    public static void updateBrawlerFromEndpoint(Scanner scanner) {
         // Ask for the brawler ID
-
+        int brawlerId;
+        do {
+            System.out.print("Brawler id: ");
+            brawlerId = scanner.nextInt();
+            scanner.nextLine();
+            if (brawlerId < 0) System.out.println("Invalid id, please try again.");
+        } while (brawlerId < 0);
+        // Search for the brawler in the Database
+        Brawler dbBrawler = MySQLBrawlerDAO.Read(brawlerId);
+        if (dbBrawler == null) {
+            System.out.printf("Brawler with the id %d doesn't exist in the database%n", brawlerId);
+            // improvement: add the ability to insert the brawler with that id in the database
+            return;
+        }
         // Call the endpoint https://api.brawlify.com/v1/brawlers/{id}
-
+        Brawler apiBrawler = BrawlifyEndpoint.fetchBrawler(brawlerId);
+        if (apiBrawler == null){
+            System.out.printf("Brawler with the id %d doesn't exist in the Brawlify API (ENDPOINT)%n", brawlerId);
+            return;
+        }
+        // Print both brawlers
+        View.separate();
+        System.out.println("Brawler from the database:");
+        View.printBrawler(dbBrawler);
+        View.separate();
+        System.out.println("brawler from the Brawlify API (ENDPOINT)");
+        View.printBrawler(apiBrawler);
         // Ask if the user wants to update the brawler in the database
+        System.out.println("Would you like to overwrite the brawler from the database with the brawler found?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
 
+        int option;
+        System.out.printf("Select option: ");
+        do {
+            option = scanner.nextInt();
+            if (option != 1 && option != 2) System.out.printf("Invalid option, please try again: ");
+        } while (option != 1 && option != 2);
+        // Update the brawler in the database, adding the updateDate
+        if (option == 2){
+            System.out.println("No changes have been done to the database.");
+        } else {
+            apiBrawler.setUpdateDate(LocalDateTime.now());
+            MySQLBrawlerDAO.Update(apiBrawler);
+        }
         // Update the brawler in the database, adding the updateDate
 
     }
+
+    // Helper functions
 
 
 
